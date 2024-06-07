@@ -1,40 +1,29 @@
 .camperCard {
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	padding: 16px;
-	margin: 16px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 5px;
 	text-align: center;
 }
 
 .camperCard img {
-	width: 100%;
-	border-radius: 8px;
+	width: 290px;
+	height: 310px;
+	vertical-align: middle;
+	vertical-align: top;
+	float: right;
+	float: left;
 }
 
 .camperCard h3 {
-	font-size: 1.5em;
-	margin-bottom: 0.5em;
-}
-
-.camperCard p {
-	margin: 0.5em 0;
+	margin: 10px 0;
 }
 
 .price {
-	color: green;
-	font-weight: bold;
+	font-size: 1.2em;
+	color: #333;
 }
 
 button {
-	background-color: #007bff;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	padding: 8px 16px;
-	cursor: pointer;
-	margin: 8px 0;
-}
-
-button:hover {
-	background-color: #0056b3;
+	margin: 5px;
 }

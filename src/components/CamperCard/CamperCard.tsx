@@ -20,6 +20,7 @@ const CamperCard: React.FC<CamperCardProps> = ({ advert }) => {
 			<h3>{advert.name}</h3>
 			<p>{advert.description}</p>
 			<p className={styles.price}>€{advert.price.toFixed(2)}</p>
+			<p className={styles.location}>{advert.location}</p>
 			<button onClick={handleFavoriteClick}>
 				{advert.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
 			</button>

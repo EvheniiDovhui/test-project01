@@ -1,66 +1,58 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+
+interface Camper {
+	_id: string
+	name: string
+	location: string
+	description: string
+	gallery?: string[]
+	equipment: string[]
+	type: string
+	reviews?: {
+		reviewer_name: string
+		reviewer_rating: number
+		comment: string
+	}[]
+	isFavorite?: boolean
+}
+
+interface AdvertsState {
+	items: Camper[]
+}
+
+const initialState: AdvertsState = {
+	items: [],
+}
 
 export const fetchAdverts = createAsyncThunk(
 	'adverts/fetchAdverts',
 	async () => {
-		const response = await axios.get('https://your-mockapi-endpoint/adverts')
+		const response = await axios.get<Camper[]>(
+			'https://6661704b63e6a0189fe9d8c1.mockapi.io/api/v1/campers'
+		)
 		return response.data
 	}
 )
-
-interface Advert {
-	_id: string
-	name: string
-	price: number
-	rating: number
-	location: string
-	adults: number
-	children: number
-	engine: string
-	transmission: string
-	form: string
-	length: string
-	width: string
-	height: string
-	tank: string
-	consumption: string
-	description: string
-	details: any
-	gallery: string[]
-	reviews: any[]
-	isFavorite: boolean
-}
-
-const initialState = {
-	items: [] as Advert[],
-	favorites: JSON.parse(localStorage.getItem('favorites') || '[]') as Advert[],
-}
 
 const advertsSlice = createSlice({
 	name: 'adverts',
 	initialState,
 	reducers: {
-		toggleFavorite: (state, action) => {
-			const advertId = action.payload
-			const advert = state.items.find(item => item._id === advertId)
+		toggleFavorite: (state, action: PayloadAction<string>) => {
+			const advert = state.items.find(item => item._id === action.payload)
 			if (advert) {
 				advert.isFavorite = !advert.isFavorite
-				if (advert.isFavorite) {
-					state.favorites.push(advert)
-				} else {
-					state.favorites = state.favorites.filter(
-						item => item._id !== advertId
-					)
-				}
-				localStorage.setItem('favorites', JSON.stringify(state.favorites))
 			}
 		},
 	},
 	extraReducers: builder => {
-		builder.addCase(fetchAdverts.fulfilled, (state, action) => {
-			state.items = action.payload
-		})
+		builder.addCase(
+			fetchAdverts.fulfilled,
+			(state, action: PayloadAction<Camper[]>) => {
+				state.items = action.payload
+			}
+		)
 	},
 })
 
