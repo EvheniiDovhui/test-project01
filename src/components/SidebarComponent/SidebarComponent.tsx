@@ -7,7 +7,8 @@ import {
 	SubMenu,
 	menuClasses,
 } from 'react-pro-sidebar'
-import { Select } from 'antd'
+import { Select, Checkbox, Radio } from 'antd'
+import styles from './SidebarComponent.module.css'
 
 const SidebarComponent = () => {
 	const [locations, setLocations] = useState<string[]>([])
@@ -69,7 +70,7 @@ const SidebarComponent = () => {
 	}
 
 	return (
-		<div style={{ display: 'flex', height: '100%', minHeight: '400px' }}>
+		<div className={styles.container}>
 			<Sidebar
 				image='https://i.pinimg.com/736x/8e/6c/06/8e6c064f57f94838263d7ba9ad80f353.jpg'
 				rootStyles={{
@@ -99,13 +100,26 @@ const SidebarComponent = () => {
 							))}
 						</Select>
 					</SubMenu>
+					<SubMenu label='Vehicle equipment'>
+						<Checkbox.Group>
+							<Checkbox value='AC'>AC</Checkbox>
+							<Checkbox value='TV'>TV</Checkbox>
+							<Checkbox value='Kitchen'>Kitchen</Checkbox>
+						</Checkbox.Group>
+					</SubMenu>
+					<SubMenu label='Vehicle type'>
+						<Radio.Group>
+							<Radio value='Van'>Van</Radio>
+							<Radio value='Motorhome'>Motorhome</Radio>
+						</Radio.Group>
+					</SubMenu>
 					<MenuItem> Documentation </MenuItem>
 					<MenuItem> Calendar </MenuItem>
 				</Menu>
 			</Sidebar>
-			<div>
-				{selectedCamper && (
-					<div>
+			<div className={styles.content}>
+				{selectedCamper ? (
+					<div className={styles.camperDetails}>
 						<h2>Selected Camper: {selectedCamper.name}</h2>
 						<p>
 							<strong>Location:</strong> {selectedCamper.location}
@@ -142,14 +156,24 @@ const SidebarComponent = () => {
 							</div>
 						)}
 					</div>
-				)}
-				{!selectedCamper && (
+				) : (
 					<div>
 						<h2>Campers in {selectedLocation || 'All Locations'}</h2>
-						<ul>
+						<ul className={styles.camperList}>
 							{campers.map(camper => (
 								<li key={camper._id}>
 									<h3>{camper.name}</h3>
+									<div>
+										<h3>Gallery</h3>
+										{camper.gallery?.map(image => (
+											<img
+												key={image}
+												src={image}
+												alt='Camper Gallery'
+												style={{ maxWidth: '200px', margin: '5px' }}
+											/>
+										))}
+									</div>
 									<p>
 										<strong>Location:</strong> {camper.location}
 									</p>

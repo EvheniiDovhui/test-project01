@@ -1,13 +1,21 @@
-// App.tsx
 import React from 'react'
-
-import styles from './App.module.css' // Імпортуємо CSS модуль
+import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
+import HomePage from './pages/HomePage'
+import CatalogPage from './pages/CatalogPage'
+import FavoritesPage from './pages/FavoritesPage'
+import './App.module.css'
 
-const App = () => {
+function App() {
 	return (
-		<div className={styles.app}>
+		<div className='App'>
 			<Navbar />
+			<Routes>
+				<Route path='/' element={<HomePage />} />
+				<Route path='/catalog' element={<CatalogPage />} />
+				<Route path='/favorites' element={<FavoritesPage />} />
+				<Route path='*' element={<HomePage />} />
+			</Routes>
 		</div>
 	)
 }

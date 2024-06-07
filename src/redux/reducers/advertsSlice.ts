@@ -4,9 +4,7 @@ import axios from 'axios'
 export const fetchAdverts = createAsyncThunk(
 	'adverts/fetchAdverts',
 	async () => {
-		const response = await axios.get(
-			'https://6661704b63e6a0189fe9d8c1.mockapi.io/api/v1/campers'
-		)
+		const response = await axios.get('https://your-mockapi-endpoint/adverts')
 		return response.data
 	}
 )
@@ -14,17 +12,34 @@ export const fetchAdverts = createAsyncThunk(
 interface Advert {
 	_id: string
 	name: string
+	price: number
+	rating: number
+	location: string
+	adults: number
+	children: number
+	engine: string
+	transmission: string
+	form: string
+	length: string
+	width: string
+	height: string
+	tank: string
+	consumption: string
 	description: string
+	details: any
 	gallery: string[]
+	reviews: any[]
 	isFavorite: boolean
+}
+
+const initialState = {
+	items: [] as Advert[],
+	favorites: JSON.parse(localStorage.getItem('favorites') || '[]') as Advert[],
 }
 
 const advertsSlice = createSlice({
 	name: 'adverts',
-	initialState: {
-		items: [] as Advert[],
-		favorites: [] as Advert[],
-	},
+	initialState,
 	reducers: {
 		toggleFavorite: (state, action) => {
 			const advertId = action.payload
@@ -38,6 +53,7 @@ const advertsSlice = createSlice({
 						item => item._id !== advertId
 					)
 				}
+				localStorage.setItem('favorites', JSON.stringify(state.favorites))
 			}
 		},
 	},
