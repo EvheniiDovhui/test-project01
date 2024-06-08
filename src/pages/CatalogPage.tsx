@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-
-import { fetchAdverts } from '../redux/reducers/advertsSlice'
-import { AppDispatch } from '../redux/reducers/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAdverts, Camper } from '../redux/reducers/advertsSlice'
+import { RootState, AppDispatch } from '../redux/reducers/store'
 import styles from './CatalogPage.module.css'
 import SidebarComponent from '../components/SidebarComponent/SidebarComponent'
 import CamperList from '../components/CamperList/CamperList'
+import { selectLocations } from '../redux/reducers/advertsSlice'
 
 const CatalogPage: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>()
@@ -17,11 +17,13 @@ const CatalogPage: React.FC = () => {
 		dispatch(fetchAdverts())
 	}, [dispatch])
 
+	// Вибірка даних зі стану за допомогою мемоізованого селектора
+	const locations = useSelector((state: RootState) => selectLocations(state))
+
 	return (
 		<div className={styles.catalogPage}>
-			<h1>Catalog of Campers</h1>
 			<SidebarComponent
-				locations={['Kyiv', 'Lviv', 'Odessa']} // Приклад локацій
+				locations={locations} // Передача масиву локацій до SidebarComponent
 				onLocationChange={setLocation}
 				onEquipmentChange={setEquipment}
 				onVehicleTypeChange={setVehicleType}

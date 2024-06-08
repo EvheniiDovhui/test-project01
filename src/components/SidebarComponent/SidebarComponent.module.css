@@ -26,3 +26,21 @@
 	max-width: 200px;
 	margin: 5px;
 }
+.resetButtonContainer {
+	padding: 10px;
+	text-align: center;
+}
+
+.resetButton {
+	background-color: #ffffff;
+	color: #9f0099;
+	border: 1px solid #9f0099;
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.resetButton:hover {
+	background-color: #9f0099;
+	color: #ffffff;
+}

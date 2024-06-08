@@ -1,11 +1,17 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+	createSlice,
+	createAsyncThunk,
+	PayloadAction,
+	createSelector,
+} from '@reduxjs/toolkit'
 import axios from 'axios'
+import { RootState } from './store'
 
-interface Camper {
+export type Camper = {
 	_id: string
 	name: string
 	location: string
-	description: string
+
 	gallery?: string[]
 	equipment: string[]
 	type: string
@@ -15,6 +21,11 @@ interface Camper {
 		comment: string
 	}[]
 	isFavorite?: boolean
+	details: {
+		[key: string]: any // Ключі-строки для деталей
+	}
+	form: string
+	// Додаткові поля
 }
 
 interface AdvertsState {
@@ -24,6 +35,13 @@ interface AdvertsState {
 const initialState: AdvertsState = {
 	items: [],
 }
+
+const selectAdverts = (state: RootState) => state.adverts.items
+
+export const selectLocations = createSelector([selectAdverts], adverts => {
+	if (!adverts) return []
+	return Array.from(new Set(adverts.map((ad: Camper) => ad.location)))
+})
 
 export const fetchAdverts = createAsyncThunk(
 	'adverts/fetchAdverts',
@@ -54,6 +72,21 @@ const advertsSlice = createSlice({
 			}
 		)
 	},
+})
+
+export const selectDetails = createSelector([selectAdverts], adverts => {
+	if (!adverts) return []
+
+	const detailsSet = new Set<string>()
+	adverts.forEach((ad: Camper) => {
+		Object.keys(ad.details).forEach(key => {
+			if (ad.details[key] === true) {
+				detailsSet.add(key)
+			}
+		})
+	})
+
+	return Array.from(detailsSet)
 })
 
 export const { toggleFavorite } = advertsSlice.actions
