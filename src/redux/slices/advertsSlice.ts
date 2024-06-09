@@ -22,10 +22,10 @@ export type Camper = {
 	}[]
 	isFavorite?: boolean
 	details: {
-		[key: string]: any // Ключі-строки для деталей
+		[key: string]: any 
 	}
 	form: string
-	// Додаткові поля
+	
 }
 
 interface AdvertsState {
