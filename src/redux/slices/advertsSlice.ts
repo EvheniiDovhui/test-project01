@@ -5,7 +5,7 @@ import {
 	createSelector,
 } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { RootState } from './store'
+import { RootState } from '../store'
 
 export type Camper = {
 	_id: string

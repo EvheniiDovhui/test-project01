@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAdverts, Camper } from '../redux/reducers/advertsSlice'
-import { RootState, AppDispatch } from '../redux/reducers/store'
+
 import styles from './CatalogPage.module.css'
-import SidebarComponent from '../components/SidebarComponent/SidebarComponent'
-import CamperList from '../components/CamperList/CamperList'
-import { selectLocations } from '../redux/reducers/advertsSlice'
+
+import { fetchAdverts, selectLocations } from '../../redux/slices/advertsSlice'
+import { AppDispatch, RootState } from '../../redux/store'
+import SidebarComponent from '../../components/SidebarComponent/SidebarComponent'
+import CamperList from '../../components/CamperList/CamperList'
 
 const CatalogPage: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>()

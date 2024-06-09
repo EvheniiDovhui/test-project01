@@ -1,8 +1,9 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleFavorite } from '../../redux/reducers/advertsSlice'
+
 import Modal from '../modal/Modal'
 import styles from './AdvertisementCard.module.css'
+import { toggleFavorite } from '../../redux/slices/advertsSlice'
 
 interface AdvertisementCardProps {
 	advert: {

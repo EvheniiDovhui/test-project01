@@ -1,21 +1,35 @@
 .navbar {
-	background-color: #333;
-	color: white;
-	padding: 1rem;
-}
-
-.navbar ul {
-	list-style: none;
-	padding: 0;
+	position: fixed;
+	width: 15rem;
+	height: 2rem;
+	top: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+	border-radius: 10px;
+	background-color: #fffa;
+	backdrop-filter: blur(10px);
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
 	display: flex;
+}
+.navlist {
+	display: flex;
+	flex-direction: row;
 	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }
 
-.navbar a {
-	color: white;
+.navLink {
+	transition: all 0.2s;
+	position: relative;
+	padding: 1rem 2rem;
+	border-radius: 5px;
 	text-decoration: none;
+	color: unset;
 }
 
-.navbar a:hover {
-	text-decoration: underline;
+.navLink:hover {
+	background-color: #eee;
 }

@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App'
-import store from './redux/reducers/store'
+
 import './index.css'
+import store from './redux/store'
 
 const container = document.getElementById('root')
 

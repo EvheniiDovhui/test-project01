@@ -1,14 +1,15 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
+
+import styles from './App.module.css'
+import HomePage from './pages/HomePage/HomePage'
+import CatalogPage from './pages/CatalogPage/CatalogPage'
+import FavoritesPage from './pages/FavoritesPage/FavoritesPage'
 import Navbar from './components/Navbar/Navbar'
-import HomePage from './pages/HomePage'
-import CatalogPage from './pages/CatalogPage'
-import FavoritesPage from './pages/FavoritesPage'
-import './App.module.css'
 
 function App() {
 	return (
-		<div className='App'>
+		<div className={styles.App}>
 			<Navbar />
 			<Routes>
 				<Route path='/' element={<HomePage />} />

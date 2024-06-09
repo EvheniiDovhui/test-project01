@@ -1,9 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleFavorite } from '../../redux/reducers/advertsSlice'
+
 import Modal from '../../components/modal/Modal'
 import Camper from './Camper'
 import styles from './CamperDetails.module.css'
+import { toggleFavorite } from '../../redux/slices/advertsSlice'
 
 interface CamperDetailsProps {
 	advert: Camper

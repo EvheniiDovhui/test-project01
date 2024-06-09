@@ -1,14 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	fetchAdverts,
-	Camper,
-	selectLocations,
-	selectDetails,
-} from '../../redux/reducers/advertsSlice'
-import { RootState } from '../../redux/reducers/store'
+
 import CamperCard from '../CamperCard/CamperCard'
 import styles from './CamperList.module.css'
+import { RootState } from '../../redux/store'
+import { Camper, fetchAdverts } from '../../redux/slices/advertsSlice'
 
 interface CamperListProps {
 	location: string | null
@@ -54,7 +50,6 @@ const CamperList: React.FC<CamperListProps> = ({
 	}
 
 	useEffect(() => {
-		console.log('Adverts in Redux Store:', adverts)
 		dispatch(fetchAdverts() as any)
 	}, [dispatch])
 

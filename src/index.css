@@ -1,3 +1,16 @@
+:root {
+	--color-white: rgb(255, 255, 255);
+	--color-black: rgb(0, 0, 0);
+
+	--color-text: rgb(16, 24, 40);
+	--color-text-secondary: rgba(16, 24, 40, 0.6);
+
+	--color-text-light: rgb(71, 84, 103);
+
+	--color-button: rgb(228, 72, 72);
+	--color-button-hover: rgb(216, 67, 67);
+}
+
 /* Reset styles */
 h1,
 h2,

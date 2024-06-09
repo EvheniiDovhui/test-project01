@@ -3,9 +3,14 @@ import {
 	REMOVE_FROM_FAVORITES,
 } from '../actions/favoritesActions'
 
-const initialState = []
+interface Action {
+	type: string
+	payload: any
+}
 
-const favoritesReducer = (state = initialState, action) => {
+const initialState: any[] = []
+
+const favoritesReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
 		case ADD_TO_FAVORITES:
 			if (!state.includes(action.payload)) {

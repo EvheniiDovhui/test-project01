@@ -1,0 +1,10 @@
+/* SimpleCarousel.module.css */
+.sliderContainer {
+	width: 80%;
+	margin: auto;
+}
+
+.image {
+	width: 100%;
+	cursor: pointer;
+}

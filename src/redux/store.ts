@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import advertsReducer from './advertsSlice'
+import advertsReducer from './slices/advertsSlice'
 
 const store = configureStore({
 	reducer: {

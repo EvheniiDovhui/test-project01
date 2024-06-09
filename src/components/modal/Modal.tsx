@@ -21,12 +21,34 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 		}
 	}, [onClose])
 
+	useEffect(() => {
+		// Повернення фокусу на активатор модалки після закриття модалки
+		if (isOpen) {
+			const activeElement = document.activeElement as HTMLElement
+			const modalContent = document.querySelector(
+				`.${styles.modalContent}`
+			) as HTMLElement
+
+			if (modalContent && !modalContent.contains(activeElement)) {
+				modalContent.focus()
+			}
+		}
+	}, [isOpen])
+
 	if (!isOpen) return null
 
 	return (
 		<div className={styles.modal} onClick={onClose}>
-			<div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-				<button className={styles.closeBtn} onClick={onClose}>
+			<div
+				className={styles.modalContent}
+				onClick={e => e.stopPropagation()}
+				tabIndex={0}
+			>
+				<button
+					className={styles.closeBtn}
+					onClick={onClose}
+					aria-label='Close modal'
+				>
 					×
 				</button>
 				{children}

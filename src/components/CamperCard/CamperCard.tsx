@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleFavorite } from '../../redux/reducers/advertsSlice'
+import Modal from '../modal/Modal'
+import ModalContent from '../modal/ModalContent/ModalContent' // Шлях до вашого файлу з ModalContent
+
 import styles from './CamperCard.module.css'
 import { ReactComponent as HeartIcon } from './heart.svg'
 import { ReactComponent as HeartFilledIcon } from './heart-filled.svg'
+import { toggleFavorite } from '../../redux/slices/advertsSlice'
 
 interface CamperCardProps {
 	advert: any
@@ -11,6 +14,7 @@ interface CamperCardProps {
 
 const CamperCard: React.FC<CamperCardProps> = ({ advert }) => {
 	const dispatch = useDispatch()
+	const [showModal, setShowModal] = useState(false)
 
 	const handleFavoriteClick = () => {
 		dispatch(toggleFavorite(advert._id))
@@ -23,6 +27,15 @@ const CamperCard: React.FC<CamperCardProps> = ({ advert }) => {
 			return text
 		}
 	}
+
+	const openModal = () => {
+		setShowModal(true)
+	}
+
+	const closeModal = () => {
+		setShowModal(false)
+	}
+
 	return (
 		<div className={styles.card}>
 			<div className={styles.imageWrapper}>
@@ -65,7 +78,16 @@ const CamperCard: React.FC<CamperCardProps> = ({ advert }) => {
 							<HeartIcon className={styles.heartIcon} />
 						)}
 					</button>
-					<button className={styles.showMoreButton}>Show more</button>
+					<button onClick={openModal} className={styles.showMoreButton}>
+						Show more
+					</button>
+					<Modal isOpen={showModal} onClose={closeModal}>
+						<ModalContent
+							name={advert.name}
+							description={advert.description}
+							advert={advert}
+						/>
+					</Modal>
 				</div>
 			</div>
 		</div>

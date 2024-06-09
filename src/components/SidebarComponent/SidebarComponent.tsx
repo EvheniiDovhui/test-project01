@@ -3,8 +3,9 @@ import { Sidebar, Menu, SubMenu, menuClasses } from 'react-pro-sidebar'
 import { Select, Checkbox, Radio } from 'antd'
 import styles from './SidebarComponent.module.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../redux/reducers/store'
-import { fetchAdverts, Camper } from '../../redux/reducers/advertsSlice'
+import { Camper, fetchAdverts } from '../../redux/slices/advertsSlice'
+import { RootState } from '../../redux/store'
+import { useSearchParams } from 'react-router-dom'
 
 interface SidebarComponentProps {
 	locations: string[]
@@ -21,6 +22,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
 }) => {
 	const dispatch = useDispatch()
 
+	let [searchParams, setSearchParams] = useSearchParams()
 	// Завантаження оголошень при монтуванні компонента
 	useEffect(() => {
 		dispatch(fetchAdverts() as any)
@@ -41,6 +43,7 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
 		equipment: string[],
 		vehicleType: string | null
 	) => {
+		console.log('Filtering adverts with:', { location, equipment, vehicleType })
 		if (!adverts) return []
 
 		return adverts.filter((advert: Camper) => {
@@ -52,10 +55,13 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
 			// Перевірка наявності кожного обладнання у деталях оголошення
 			const matchesEquipment = equipment.every(e => {
 				const details = advert.details
-				return details && details[e as keyof typeof details] === true
+				return details && details[e as keyof typeof details] === 1
 			})
 
-			return matchesLocation && matchesVehicleType && matchesEquipment
+			const matchesAll =
+				matchesLocation && matchesVehicleType && matchesEquipment
+			console.log('Advert:', advert, 'Matches:', matchesAll)
+			return matchesAll
 		})
 	}
 
@@ -81,77 +87,100 @@ const SidebarComponent: React.FC<SidebarComponentProps> = ({
 
 	return (
 		<div className={styles.container}>
-			<Sidebar
-				image='https://i.pinimg.com/736x/8e/6c/06/8e6c064f57f94838263d7ba9ad80f353.jpg'
-				rootStyles={{
-					['& > .' + menuClasses.button]: {
-						backgroundColor: '#9f0099',
-						color: '#ffffff',
-						'&:hover': {
-							backgroundColor: '#9f0099',
-						},
-					},
-					['.' + menuClasses.subMenuContent]: {
+			<div className={styles.sidebarContainer}>
+				<Sidebar
+					style={{
 						backgroundColor: 'transparent',
-					},
-				}}
-			>
-				<Menu>
-					<SubMenu label='Location'>
-						<Select
-							style={{ width: 200 }}
-							onChange={(value: string) => {
-								onLocationChange(value)
-								handleFiltersChange(value, selectedEquipment, null)
+						border: '1px solid #ddd',
+						borderRadius: '8px',
+						boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+						position: 'sticky',
+						top: '20px', // Встановіть бажаний відступ зверху
+					}}
+					rootStyles={{
+						['& > .' + menuClasses.button]: {
+							backgroundColor: '#9f0099',
+							color: '#ffffff',
+							'&:hover': {
+								backgroundColor: '#9f0099',
+							},
+						},
+						['.' + menuClasses.subMenuContent]: {
+							backgroundColor: 'transparent',
+						},
+					}}
+				>
+					<Menu>
+						<SubMenu label='Location'>
+							<Select
+								style={{
+									width: 200,
+								}}
+								onChange={(value: string) => {
+									onLocationChange(value)
+									handleFiltersChange(value, selectedEquipment, null)
+								}}
+								placeholder='Select location'
+							>
+								{locations.map(location => (
+									<Select.Option key={location} value={location}>
+										{location}
+									</Select.Option>
+								))}
+							</Select>
+						</SubMenu>
+						<SubMenu label='Vehicle equipment'>
+							<Checkbox.Group
+								options={[
+									'airConditioner',
+									'bathroom',
+									'kitchen',
+									'TV',
+									'shower',
+								]}
+								value={selectedEquipment}
+								onChange={(values: string[]) => {
+									setSelectedEquipment(values)
+									onEquipmentChange(values)
+									handleFiltersChange(null, values, null)
+								}}
+							/>
+						</SubMenu>
+						<SubMenu label='Vehicle type'>
+							<Radio.Group
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									marginLeft: 10,
+								}}
+								onChange={e => {
+									setSearchParams({ type: e.target.value })
+									onVehicleTypeChange(e.target.value)
+									handleFiltersChange(null, selectedEquipment, e.target.value)
+								}}
+							>
+								<Radio value='panelTruck'>Van</Radio>
+								<Radio value='fullyIntegrated'>Fully Integrated</Radio>
+								<Radio value='Alcove'>Alcove</Radio>
+							</Radio.Group>
+						</SubMenu>
+					</Menu>
+					<div className={styles.resetButtonContainer}>
+						<button
+							className={styles.resetButton}
+							onClick={() => {
+								setSelectedEquipment([])
+								onEquipmentChange([])
+								onLocationChange(null)
+								onVehicleTypeChange(null)
+								handleFiltersChange(null, [], null)
 							}}
-							placeholder='Select location'
 						>
-							{locations.map(location => (
-								<Select.Option key={location} value={location}>
-									{location}
-								</Select.Option>
-							))}
-						</Select>
-					</SubMenu>
-					<SubMenu label='Vehicle equipment'>
-						<Checkbox.Group
-							options={['AC', 'Automatic', 'Kitchen', 'TV', 'Shower/WC']}
-							value={selectedEquipment}
-							onChange={(values: string[]) => {
-								setSelectedEquipment(values)
-								onEquipmentChange(values)
-								handleFiltersChange(null, values, null)
-							}}
-						/>
-					</SubMenu>
-					<SubMenu label='Vehicle type'>
-						<Radio.Group
-							onChange={e => {
-								onVehicleTypeChange(e.target.value)
-								handleFiltersChange(null, selectedEquipment, e.target.value)
-							}}
-						>
-							<Radio value='Van'>Van</Radio>
-							<Radio value='Fully Integrated'>Fully Integrated</Radio>
-							<Radio value='Alcove'>Alcove</Radio>
-						</Radio.Group>
-					</SubMenu>
-				</Menu>
-				<div className={styles.resetButtonContainer}>
-					<button
-						className={styles.resetButton}
-						onClick={() => {
-							setSelectedEquipment([])
-							onEquipmentChange([])
-							onLocationChange(null)
-							onVehicleTypeChange(null)
-							handleFiltersChange(null, [], null)
-						}}
-					>
-						Reset Filters
-					</button>
-				</div>
-			</Sidebar>
+							Reset Filters
+						</button>
+					</div>
+				</Sidebar>
+			</div>
 		</div>
 	)
 }

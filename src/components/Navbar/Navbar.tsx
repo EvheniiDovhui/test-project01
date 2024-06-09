@@ -5,7 +5,7 @@ import styles from './Navbar.module.css'
 const Navbar: React.FC = () => {
 	return (
 		<nav className={styles.navbar}>
-			<ul>
+			<ul className={styles.navlist}>
 				<li>
 					<Link to='/' className={styles.navlink}>
 						Home
