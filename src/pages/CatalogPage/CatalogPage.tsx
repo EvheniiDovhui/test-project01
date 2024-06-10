@@ -16,7 +16,7 @@ const CatalogPage: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(fetchAdverts())
-	}, [dispatch])
+	}, [])
 
 	// Вибірка даних зі стану за допомогою мемоізованого селектора
 	const locations = useSelector((state: RootState) => selectLocations(state))
